@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('agendas', function (Blueprint $table) {
+        Schema::create('tb_agenda', function (Blueprint $table) {
             $table->id();
             $table->string('agenda');
             $table->date('tanggal');
             $table->text('deskripsi');
-            $table->timestamps();
+            $table->timestamps(); // membuat kolom created_at dan updated_at
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('agendas');
+        Schema::dropIfExists('tb_agenda');
     }
 };
