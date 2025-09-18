@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\ContentController;
 
 
 Route::get('/', function () {
@@ -13,6 +14,7 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::resource('agenda', AgendaController::class);
+Route::resource('content', ContentController::class);
 
 
 Route::middleware('auth')->group(function () {

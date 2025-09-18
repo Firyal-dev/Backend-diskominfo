@@ -38,8 +38,7 @@ class AgendaController extends Controller
 
         Agenda::create($request->all());
 
-        return redirect()->route('agenda.index')
-                         ->with('success', 'Agenda berhasil ditambahkan.');
+        return redirect()->route('agenda.index')->with('success', 'Agenda berhasil ditambahkan.');
     }
 
     /**
@@ -64,8 +63,7 @@ class AgendaController extends Controller
 
         $agenda->update($request->all());
 
-        return redirect()->route('agenda.index')
-                         ->with('success', 'Agenda berhasil diperbarui.');
+        return redirect()->route('agenda.index')->with('success', 'Agenda berhasil diperbarui.');
     }
 
     /**
@@ -75,7 +73,6 @@ class AgendaController extends Controller
     {
         $agenda->delete();
 
-        return redirect()->route('agenda.index')
-                         ->with('success', 'Agenda berhasil dihapus.');
+        return redirect()->route('agenda.index')->with('success', 'Agenda berhasil dihapus.');
     }
 }
