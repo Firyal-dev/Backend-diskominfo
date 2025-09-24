@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('albums', function (Blueprint $table) {
             $table->id();
-            $table->string('nama'); // nama album
-            $table->text('deskripsi')->nullable(); // deskripsi album
+            $table->string('nama');
             $table->timestamps();
         });
     }

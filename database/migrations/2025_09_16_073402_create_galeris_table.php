@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('galeris', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->string('deskripsi');
             $table->string('file_path');
             $table->date('tgl_upload');
             $table->foreignId('album_id')

@@ -8,7 +8,6 @@ class Galeri extends Model
 {
     protected $fillable = [
         'judul',
-        'deskripsi',
         'file_path',
         'tgl_upload',
         'album_id',
@@ -21,6 +20,6 @@ class Galeri extends Model
 
     public function album()
     {
-        return $this->belongsTo(Album::class, 'album_id');
+        return $this->belongsTo(Album::class);
     }
 }

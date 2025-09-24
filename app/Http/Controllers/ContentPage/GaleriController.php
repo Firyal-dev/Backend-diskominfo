@@ -4,6 +4,8 @@ namespace App\Http\Controllers\ContentPage;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Galeri;
+use Illuminate\Support\Facades\Storage;
 
 class GaleriController extends Controller
 {
@@ -12,7 +14,8 @@ class GaleriController extends Controller
      */
     public function index()
     {
-        return view('content.galeri.galeri');
+        $galeris = Galeri::orderBy('created_at', 'desc')->get();
+        return view('content.galeri.galeri', compact('galeris'));
     }
 
     /**
@@ -28,7 +31,25 @@ class GaleriController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'file_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        try {
+            $file = $request->file('file_path');
+            $path = $file->store('galeri', 'public');
+
+            Galeri::create([
+                'judul' => $request->judul,
+                'file_path' => $path,
+                'tgl_upload' => now()
+            ]);
+
+            return redirect()->back()->with('success', 'Foto berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menambahkan foto: ' . $e->getMessage());
+        }
     }
 
     /**
