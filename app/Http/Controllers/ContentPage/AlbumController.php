@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ContentPage;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ContentController extends Controller
+class AlbumController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('content.index');
+        return view('content.album.album');
     }
 
     /**

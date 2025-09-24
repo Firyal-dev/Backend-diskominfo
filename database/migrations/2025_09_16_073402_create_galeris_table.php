@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kontens', function (Blueprint $table) {
+        Schema::create('galeris', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
+            $table->string('deskripsi');
             $table->string('file_path');
             $table->date('tgl_upload');
-            $table->enum('konten', ['galeri', 'album']);
+            $table->foreignId('album_id')
+                ->nullable()
+                ->constrained('albums')
+                ->nullOnDelete();
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kontens');
+        Schema::dropIfExists('galeris');
     }
 };
