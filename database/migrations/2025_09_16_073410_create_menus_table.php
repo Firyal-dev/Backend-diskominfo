@@ -9,13 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('menus', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+   // database/migrations/xxxx_xx_xx_xxxxxx_create_menus_table.php
+public function up(): void
+{
+    Schema::create('menus', function (Blueprint $table) {
+        $table->id();
+        $table->string('nama');
+        $table->integer('urutan')->default(0);
+        $table->enum('kategori', ['statis', 'dinamis', 'dinamis-tabel']);
+
+        // <-- PASTIKAN BARIS INI ADA
+        $table->foreignId('parent_id')->nullable()->constrained('menus')->onDelete('cascade');
+
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.
