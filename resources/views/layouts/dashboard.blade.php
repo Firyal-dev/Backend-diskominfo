@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <titl>@yield('{{--  --}}fo</titl{{--  --}}-}}
+    <title>@yield('title')</title>
 
     {{-- Aset CSS Mazer --}}
     <link rel="shortcut icon" href="{{ asset('mazer/dist/assets/compiled/svg/favicon.svg') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('mazer/dist/assets/compiled/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('mazer/dist/assets/compiled/css/app-dark.css') }}">
     <link rel="stylesheet" href="{{ asset('mazer/dist/assets/compiled/css/iconly.css') }}">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     {{-- Script untuk mencegah flash saat pergantian tema --}}
     <script>
@@ -38,12 +39,16 @@
                             <a href="{{ route('dashboard') }}"><img src="{{ asset('mazer/dist/assets/compiled/svg/logo.svg') }}" alt="Logo" srcset=""></a>
                         </div>
                         <div class="gap-2 mt-2 theme-toggle d-flex align-items-center">
-                            <svg class="iconify iconify--system-uicons" width="20" height="20" viewBox="0 0 21 21" aria-hidden="true" role="img"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M10.5 18.5a8 8 0 1 0 0-16a8 8 0 0 0 0 16Z M10.5 14.5v-8"/></svg>
+                            <svg class="iconify iconify--system-uicons" width="20" height="20" viewBox="0 0 21 21" aria-hidden="true" role="img">
+                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M10.5 18.5a8 8 0 1 0 0-16a8 8 0 0 0 0 16Z M10.5 14.5v-8" />
+                            </svg>
                             <div class="form-check form-switch fs-6">
                                 <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
                                 <label class="form-check-label"></label>
                             </div>
-                            <svg class="iconify iconify--mdi" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" role="img"><path fill="currentColor" d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 2.11-2.5 6.87 1.03 10.39c3.45 3.46 8.21 3.75 10.32 1.04Z"/></svg>
+                            <svg class="iconify iconify--mdi" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" role="img">
+                                <path fill="currentColor" d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 2.11-2.5 6.87 1.03 10.39c3.45 3.46 8.21 3.75 10.32 1.04Z" />
+                            </svg>
                         </div>
                         <div class="sidebar-toggler x">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -73,6 +78,14 @@
                             </a>
                         </li>
 
+                        {{-- Manajemen Konten --}}
+                        <li class="sidebar-item {{ request()->routeIs('content.*') ? 'active' : '' }}">
+                            <a href="{{ route('content.index') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-text-fill"></i>
+                                <span>Manajemen Konten</span>
+                            </a>
+                        </li>
+
                         {{-- [DISEMPURNAKAN] Manajemen Menu menjadi Dropdown --}}
                         <li class="sidebar-item has-sub {{ request()->routeIs('menu.*') || request()->routeIs('menu-data.*') ? 'active' : '' }}">
                             <a href="#" class='sidebar-link'>
@@ -87,8 +100,8 @@
                                 </li>
                                 {{-- Link ke CRUD Konten Menu (tb_menu_data) --}}
                                 <li class="submenu-item {{ request()->routeIs('menu-data.*') ? 'active' : '' }}">
-        <a href="{{ route('menu-data.index') }}" class="submenu-link">Konten Menu</a>
-    </li>
+                                    <a href="{{ route('menu-data.index') }}" class="submenu-link">Konten Menu</a>
+                                </li>
                             </ul>
                         </li>
 
@@ -103,12 +116,13 @@
                         </li>
 
                         <li class="sidebar-item">
-                            <a href="{{ route('logout') }}" class='sidebar-link' onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <!-- <a href="{{ route('logout') }}" class='sidebar-link' onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Logout</span>
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            </a> -->
+                            <form action="{{ route('logout') }}" method="POST">
                                 @csrf
+                                <button class="btn btn-danger w-100" type="submit">Logout</button>
                             </form>
                         </li>
                     </ul>
@@ -164,4 +178,5 @@
         });
     </script>
 </body>
+
 </html>

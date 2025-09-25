@@ -12,20 +12,18 @@ class MenuSeeder extends Seeder
     {
         DB::table('menus')->insert([
             [
-                'id' => 2,
-                'nama' => 'visi misi',
-                'urutan' => 1,
-                'kategori' => 'statis',
-                'parent_id' => 3,
-             
-            ],
-            [
                 'id' => 3,
                 'nama' => 'profil',
                 'urutan' => 1,
                 'kategori' => 'statis',
                 'parent_id' => null,
-
+            ],
+            [
+                'id' => 2,
+                'nama' => 'visi misi',
+                'urutan' => 1,
+                'kategori' => 'statis',
+                'parent_id' => 3,
             ],
             [
                 'id' => 4,
@@ -33,7 +31,6 @@ class MenuSeeder extends Seeder
                 'urutan' => 3,
                 'kategori' => 'statis',
                 'parent_id' => null,
-
             ],
             [
                 'id' => 5,
@@ -41,7 +38,6 @@ class MenuSeeder extends Seeder
                 'urutan' => 2,
                 'kategori' => 'statis',
                 'parent_id' => 3,
-
             ],
             [
                 'id' => 6,
@@ -49,7 +45,6 @@ class MenuSeeder extends Seeder
                 'urutan' => 3,
                 'kategori' => 'statis',
                 'parent_id' => 3,
-
             ],
             [
                 'id' => 7,
@@ -57,7 +52,6 @@ class MenuSeeder extends Seeder
                 'urutan' => 2,
                 'kategori' => 'statis',
                 'parent_id' => null,
-
             ],
             [
                 'id' => 8,
@@ -65,7 +59,6 @@ class MenuSeeder extends Seeder
                 'urutan' => 0,
                 'kategori' => 'dinamis',
                 'parent_id' => 7,
-
             ],
             [
                 'id' => 9,
@@ -73,7 +66,6 @@ class MenuSeeder extends Seeder
                 'urutan' => 1,
                 'kategori' => 'dinamis',
                 'parent_id' => 7,
-
             ],
             [
                 'id' => 10,
@@ -81,7 +73,6 @@ class MenuSeeder extends Seeder
                 'urutan' => 4,
                 'kategori' => 'dinamis-tabel',
                 'parent_id' => null,
-
             ],
         ]);
     }

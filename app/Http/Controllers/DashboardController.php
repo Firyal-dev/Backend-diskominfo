@@ -22,10 +22,10 @@ class DashboardController extends Controller
         $jumlahAdmin  = User::count();     // <-- 6. Count all admin users
 
         // Get the 5 upcoming agendas
-        $agendasTerdekat = Agenda::where('tanggal', operator: '>=', now())
-                                 ->orderBy('tanggal', 'asc')
-                                 ->take(5)
-                                 ->get();
+        $agendasTerdekat = Agenda::where('tanggal', '>=', now())
+            ->orderBy('tanggal', 'asc')
+            ->take(5)
+            ->get();
 
         // --- Send all the data to the view ---
         return view('dashboard.index', [
