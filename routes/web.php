@@ -9,6 +9,8 @@ use App\Http\Controllers\ContentPage\AlbumController;
 use App\Http\Controllers\ContentPage\ContentController;
 use App\Http\Controllers\menuPage\MenuController;
 use App\Http\Controllers\menuPage\MenuDataController;
+use App\Http\Controllers\api\MenuController as ApiMenuController;
+
 
 
 

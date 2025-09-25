@@ -3,43 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Agenda; // 1. PENTING: Import Model Agenda
-
-// Jika Anda sudah membuat model lain, import juga di sini
-// use App\Models\Konten;
-// use App\Models\Menu;
-// use App\Models\Admin;
+use App\Models\Agenda;
+use App\Models\Menu;
+use App\Models\MenuData;
+use App\Models\User;      // <-- 3. Import the User model for Admins
 
 class DashboardController extends Controller
 {
     /**
-     * Menampilkan halaman dashboard dengan data dinamis.
+     * Display the dashboard with dynamic data.
      */
     public function index()
     {
-        // 2. AMBIL SEMUA DATA YANG DIBUTUHKAN
-
-        // Mengambil data untuk kartu statistik
+        // --- Get all the data needed for the cards ---
         $jumlahAgenda = Agenda::count();
+        $jumlahKonten = MenuData::count(); // <-- 4. Count all content records
+        $jumlahMenu   = Menu::count();     // <-- 5. Count all menu structure records
+        $jumlahAdmin  = User::count();     // <-- 6. Count all admin users
 
-        // Baris di bawah ini akan error jika Modelnya belum dibuat.
-        // Anda bisa membukanya satu per satu setelah membuat Modelnya.
-        // $jumlahKonten = Konten::count();
-        // $jumlahMenu   = Menu::count();
-        // $jumlahAdmin  = Admin::count();
-
-        // Mengambil 5 agenda terdekat dari hari ini
-        $agendasTerdekat = Agenda::where('tanggal', '>=', now())
+        // Get the 5 upcoming agendas
+        $agendasTerdekat = Agenda::where('tanggal', operator: '>=', now())
                                  ->orderBy('tanggal', 'asc')
                                  ->take(5)
                                  ->get();
 
-        // 3. KIRIM SEMUA DATA KE VIEW
+        // --- Send all the data to the view ---
         return view('dashboard.index', [
             'jumlahAgenda'    => $jumlahAgenda,
-            'jumlahKonten'    => 0, // Ganti 0 dengan $jumlahKonten jika model sudah ada
-            'jumlahMenu'      => 0, // Ganti 0 dengan $jumlahMenu jika model sudah ada
-            'jumlahAdmin'     => 0, // Ganti 0 dengan $jumlahAdmin jika model sudah ada
+            'jumlahKonten'    => $jumlahKonten,
+            'jumlahMenu'      => $jumlahMenu,
+            'jumlahAdmin'     => $jumlahAdmin,
             'agendasTerdekat' => $agendasTerdekat,
         ]);
     }
