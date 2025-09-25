@@ -3,30 +3,31 @@
         <div class="col-md-6 col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="modal fade text-left" id="galeri" tabindex="-1" role="dialog"
+                    <div class="modal fade text-left" id="edit-album" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel1">Tambah foto</h5>
+                                    <h5 class="modal-title" id="myModalLabel1">Edit Album</h5>
                                 </div>
-                                <form method="post" action="{{ route('content.uploadGaleri') }}" class="form form-vertical" enctype="multipart/form-data">
+                                <form method="post" action="{{ route('content.editAlbum', $album->id) }}" class="form form-vertical" enctype="multipart/form-data">
                                     @csrf
                                     <div class="modal-body">
                                         <div class="form-body">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <div class="form-group">
-                                                        <label for="first-judul-vertical">Judul</label>
-                                                        <input type="text" id="first-judul-vertical" class="form-control"
-                                                            name="judul" placeholder="judul" required>
-                                                    </div>
+                                                    <label for="first-judul-vertical">Edit Album</label>
+                                                    <input type="text" id="first-judul-vertical" class="form-control"
+                                                        name="nama" placeholder="Nama Album" value="{{ $album->nama }}">
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
-                                                        <label for="email-id-vertical">Foto</label>
+                                                        <label for="foto-id-vertical">Cover Album (opsional)</label>
                                                         <input type="file" id="foto-id-vertical" class="form-control"
-                                                            name="file_path" placeholder="Foto" required>
+                                                            name="cover_album_url" placeholder="Cover Album">
+                                                        @if($album->cover_album_url)
+                                                        <img src="{{ asset('storage/' . $album->cover_album_url) }}" alt="Cover Album" class="img-fluid mt-2" style="max-height:100px;">
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>

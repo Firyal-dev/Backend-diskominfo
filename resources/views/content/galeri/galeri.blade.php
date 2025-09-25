@@ -7,42 +7,33 @@
                         <h5 class="card-title">Galeri</h5>
                     </div>
                     <div class="card-body">
-                        <div class="row gallery" data-bs-toggle="modal" data-bs-target="#galleryModal">
-                            @forelse($galeris as $galeri)
+                        <div class="row gallery" id="galleryCheckboxes">
+                            @forelse ($galeris as $index => $galeri)
                             <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
-                                <a href="#">
-                                    <img class="w-100 active" src="{{ asset('storage/' . $galeri->file_path) }}" data-bs-target="#Gallerycarousel" data-bs-slide-to="{{ $loop->index }}">
-                                </a>
+                                <div class="position-relative">
+                                    <!-- Checkbox pojok kanan atas -->
+                                    <input type="checkbox" name="selected_galeri[]" value="{{ $galeri->id }}"
+                                        class="form-check-input position-absolute top-0 end-0 m-2" style="z-index:2;">
+
+                                    <!-- Gambar -->
+                                    <a href="#" data-bs-target="#Gallerycarousel" data-bs-slide-to="{{ $index }}">
+                                        <img class="w-100" data-bs-toggle="modal" data-bs-target="#galleryModal" src="{{ asset('storage/' . $galeri->file_path) }}" alt="{{ $galeri->judul }}">
+                                    </a>
+                                    <div>
+                                        <h6 class="mt-2 text-truncate" title="{{ $galeri->judul }}">{{ $galeri->judul }}</h6>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <p>{{ $galeri->tgl_upload }}</p>
+                                </div>
                             </div>
                             @empty
                             <div class="col-12">
-                                <p class="text-center">Tidak ada foto yang tersedia.</p>
+                                <h5 class="text-center">Tidak ada foto</h5>
                             </div>
                             @endforelse
                         </div>
 
-                        <!-- <div class="row mt-2 mt-md-4 gallery" data-bs-toggle="modal" data-bs-target="#galleryModal">
-                            <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
-                                <a href="#">
-                                    <img class="w-100 active" src="https://images.unsplash.com/photo-1633008808000-ce86bff6c1ed?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyN3x8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" data-bs-target="#Gallerycarousel" data-bs-slide-to="0">
-                                </a>
-                            </div>
-                            <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
-                                <a href="#">
-                                    <img class="w-100" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=870&q=80" data-bs-target="#Gallerycarousel" data-bs-slide-to="1">
-                                </a>
-                            </div>
-                            <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
-                                <a href="#">
-                                    <img class="w-100" src="https://images.unsplash.com/photo-1632951634308-d7889939c125?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0M3x8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" data-bs-target="#Gallerycarousel" data-bs-slide-to="2">
-                                </a>
-                            </div>
-                            <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
-                                <a href="#">
-                                    <img class="w-100" src="https://images.unsplash.com/photo-1632949107130-fc0d4f747b26?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3OHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" data-bs-target="#Gallerycarousel" data-bs-slide-to="3">
-                                </a>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -50,47 +41,33 @@
     </section>
 </div>
 
-<!-- <div class="modal fade" id="galleryModal" tabindex="-1" role="dialog"
+<div class="modal fade" id="galleryModal" tabindex="-1" role="dialog"
     aria-labelledby="galleryModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-centered"
-        role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="galleryModalTitle">Our Gallery Example</h5>
-                <button type="button" class="close" data-bs-dismiss="modal"
-                    aria-label="Close">
-                    <i data-feather="x"></i>
-                </button>
+                <h5 class="modal-title" id="galleryModalTitle">Galeri</h5>
             </div>
             <div class="modal-body">
 
                 <div id="Gallerycarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#Gallerycarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#Gallerycarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#Gallerycarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                        <button type="button" data-bs-target="#Gallerycarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                    </div>
+
+                    {{-- Carousel items --}}
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img class="d-block w-100" src="https://images.unsplash.com/photo-1633008808000-ce86bff6c1ed?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyN3x8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60">
+                        @foreach ($galeris as $index => $galeri)
+                        <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                            <img class="d-block w-100" src="{{ asset('storage/' . $galeri->file_path) }}" alt="{{ $galeri->judul }}">
                         </div>
-                        <div class="carousel-item">
-                            <img class="d-block w-100" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=870&q=80">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="d-block w-100" src="https://images.unsplash.com/photo-1632951634308-d7889939c125?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0M3x8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="d-block w-100" src="https://images.unsplash.com/photo-1632949107130-fc0d4f747b26?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3OHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60">
-                        </div>
+                        @endforeach
                     </div>
-                    <a class="carousel-control-prev" href="#Gallerycarousel" role="button" type="button" data-bs-slide="prev">
+
+                    {{-- Controls --}}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#Gallerycarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </a>
-                    <a class="carousel-control-next" href="#Gallerycarousel" role="button" data-bs-slide="next">
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#Gallerycarousel" data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </a>
+                    </button>
                 </div>
             </div>
 
@@ -99,4 +76,57 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>
+
+<!-- Delete berjamaah -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteForm = document.getElementById('deleteGaleriForm');
+        const gallery = document.getElementById('galleryCheckboxes');
+
+        deleteForm.addEventListener('submit', function(e) {
+            // Hapus input hidden sebelumnya
+            deleteForm.querySelectorAll('input[name="selected_galeri[]"]').forEach(el => el.remove());
+
+            // Ambil semua checkbox yang dicentang
+            gallery.querySelectorAll('input[type="checkbox"][name="selected_galeri[]"]:checked').forEach(function(checkbox) {
+                // Buat input hidden di form toolbar
+                const hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = 'selected_galeri[]';
+                hidden.value = checkbox.value;
+                deleteForm.appendChild(hidden);
+            });
+        });
+    });
+</script>
+
+<!-- Menghitung jumlah foto yang dipilih -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const gallery = document.getElementById('galleryCheckboxes');
+        const selectedCount = document.getElementById('selectedCountGaleri');
+        const deleteBtn = document.getElementById('deleteGaleriBtn');
+
+        function updateSelectedCount() {
+            const checked = gallery.querySelectorAll('input[type="checkbox"][name="selected_galeri[]"]:checked').length;
+            if (checked > 0) {
+                selectedCount.style.display = 'inline-block';
+                selectedCount.textContent = checked;
+                deleteBtn.disabled = false;
+            } else {
+                selectedCount.style.display = 'none';
+                deleteBtn.disabled = true;
+            }
+        }
+
+        if (gallery) {
+            gallery.addEventListener('change', function(e) {
+                if (e.target.matches('input[type="checkbox"][name="selected_galeri[]"]')) {
+                    updateSelectedCount();
+                }
+            });
+            updateSelectedCount();
+        }
+    });
+</script>
