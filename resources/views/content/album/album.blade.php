@@ -9,7 +9,7 @@
                     <div class="card-body">
                         <div class="row gallery" id="albumCheckboxes">
                             @forelse ($albums as $album)
-                            <div class="col-6 mb-4">
+                            <div class="col-12 col-sm-6 mb-4">
                                 <div class="border rounded p-2 h-100 d-flex flex-column position-relative">
                                     <!-- Label jumlah foto -->
                                     <input type="checkbox" name="selected_album[]" value="{{ $album->id }}"
@@ -24,9 +24,9 @@
 
                                     <h5 class="mb-1 text-truncate" title="{{ $album->nama }}">{{ $album->nama }}</h5>
 
-                                    <div class="d-flex gap-2">
-                                        <button @click="albumId = {{ $album->id }}; view = 'album-photos'" class="btn btn-outline-primary w-100">Lihat Album</button>
-                                        <button data-bs-toggle="modal" data-bs-target="#edit-album" class="btn btn-outline-warning w-100">Edit Album</button>
+                                    <div class="d-flex flex-column flex-sm-row gap-2">
+                                        <button @click="albumId = {{ $album->id }}; view = 'album-photos'" class="btn btn-outline-primary flex-fill">Lihat Album</button>
+                                        <button data-bs-toggle="modal" data-bs-target="#edit-album" class="btn btn-outline-warning flex-fill">Edit Album</button>
                                     </div>
                                 </div>
                             </div>

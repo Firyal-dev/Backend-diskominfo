@@ -9,7 +9,7 @@
                     <div class="card-body">
                         <div class="row gallery" id="galleryCheckboxes">
                             @forelse ($galeris as $index => $galeri)
-                            <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
+                            <div class="col-12 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2">
                                 <div class="position-relative">
                                     <!-- Checkbox pojok kanan atas -->
                                     <input type="checkbox" name="selected_galeri[]" value="{{ $galeri->id }}"

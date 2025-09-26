@@ -12,7 +12,7 @@
                             $filteredGaleri = $galeris->where('album_id', '!=', null);
                             @endphp
                             @forelse ($filteredGaleri as $index => $galeri)
-                            <div class="col-6 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2"
+                            <div class="col-12 col-sm-6 col-lg-3 mt-2 mt-md-0 mb-md-0 mb-2"
                                 x-show="albumId === {{ $galeri->album_id }}">
                                 <div class="position-relative">
                                     <input type="checkbox" name="selected_photosAlbum[]" value="{{ $galeri->id }}"

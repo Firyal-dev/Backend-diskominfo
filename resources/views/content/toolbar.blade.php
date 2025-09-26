@@ -1,5 +1,5 @@
 <div class="card-header d-flex border-bottom align-items-center">
-    <div class="d-flex justify-content-between w-100">
+    <div class="d-flex flex-column flex-md-row justify-content-between w-100 gap-2">
         <div>
             <!-- Button galeri -->
             <div x-show="view === 'galeri'">
@@ -30,6 +30,13 @@
                 </div>
             </div>
 
+            <!-- Back button in photos album -->
+            <div x-show="view === 'album-photos'">
+                <button class="btn btn-secondary" @click="view = 'album'">
+                    <i class="bi bi-arrow-left"></i> Kembali ke Album
+                </button>
+            </div>
+
             <!-- Button photos in album -->
             <div x-show="view === 'album-photos'">
                 <div class="d-flex gap-2">
@@ -44,13 +51,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-
-        <!-- Back button in photos album -->
-        <div x-show="view === 'album-photos'">
-            <button class="btn btn-secondary" @click="view = 'album'">
-                <i class="bi bi-arrow-left"></i> Kembali ke Album
-            </button>
         </div>
 
         <!-- toggle gallery/album -->

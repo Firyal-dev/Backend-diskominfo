@@ -5,7 +5,7 @@
                 <div class="card-body">
                     <div class="modal fade text-left" id="galeri" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="myModalLabel1">Tambah foto</h5>
@@ -34,9 +34,11 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-check-circle"></i>
                                             <span class="d-none d-sm-block">Simpan</span>
                                         </button>
                                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                            <i class="bi bi-x-circle"></i>
                                             <span class="d-none d-sm-block">Batal</span>
                                         </button>
                                     </div>
