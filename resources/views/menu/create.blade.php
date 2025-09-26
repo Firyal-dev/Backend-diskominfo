@@ -12,9 +12,9 @@
                 <div class="card-header">
                     <h4 class="card-title">Formulir Menu</h4>
                 </div>
-                <div class="card-body"> 
+                <div class="card-body">
                     {{-- Menampilkan pesan error validasi jika ada --}}
-                    @if ($errors->any())    
+                    @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul class="mb-0">
                                 @foreach ($errors->all() as $error)
@@ -53,6 +53,18 @@
                                         </option>
                                         <option value="dinamis-tabel"
                                             {{ old('kategori') == 'dinamis-tabel' ? 'selected' : '' }}>Dinamis (Tabel)
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="tipe_tampilan" class="form-label">Tipe Tampilan (untuk Kategori
+                                        Dinamis)</label>
+                                    <select class="form-select" id="tipe_tampilan" name="tipe_tampilan" required>
+                                        <option value="card" {{ old('tipe_tampilan') == 'card' ? 'selected' : '' }}>Card
+                                        </option>
+                                        <option value="list" {{ old('tipe_tampilan') == 'list' ? 'selected' : '' }}>List
+                                        </option>
+                                        <option value="tabel" {{ old('tipe_tampilan') == 'tabel' ? 'selected' : '' }}>Tabel
                                         </option>
                                     </select>
                                 </div>

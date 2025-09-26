@@ -9,7 +9,6 @@ class MenuData extends Model
 {
     use HasFactory;
 
-    // Mendefinisikan nama tabel secara eksplisit
     protected $table = 'menu_data';
 
     protected $fillable = [
@@ -17,11 +16,9 @@ class MenuData extends Model
         'judul',
         'isi_konten',
         'gambar_file_path',
+        'file_path', // <-- TAMBAHKAN BARIS INI
     ];
 
-    /**
-     * Relasi ke Menu (satu data konten dimiliki oleh satu menu).
-     */
     public function menu()
     {
         return $this->belongsTo(Menu::class);

@@ -55,7 +55,14 @@
                         <div class="form-group">
                             <label for="gambar">Gambar/File</label>
                             <input type="file" class="form-control" id="gambar" name="gambar">
-                            <small class="text-muted">Opsional. Tipe file yang diizinkan: JPG, PNG, GIF, SVG, WEBP. Ukuran maks 2MB.</small>
+                            <small class="text-muted">Opsional. Tipe file yang diizinkan: JPG, PNG, GIF, SVG, WEBP. Ukuran
+                                maks 2MB.</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dokumen">Upload Dokumen</label>
+                            <input type="file" class="form-control" id="dokumen" name="dokumen">
+                            <small class="text-muted">Opsional. Tipe file: PDF, DOC, XLS, PPT. Maks 10MB.</small>
                         </div>
 
                         <div class="form-group">

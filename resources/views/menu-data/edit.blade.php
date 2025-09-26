@@ -56,6 +56,19 @@
                             @endif
                         </div>
                         <div class="form-group">
+                            <label for="dokumen">Dokumen Baru</label>
+                            <input type="file" class="form-control" id="dokumen" name="dokumen">
+                            <small class="text-muted">Opsional. Kosongkan jika tidak ingin mengubah dokumen.</small>
+                            @if ($menuDataItem->file_path)
+                                <div class="mt-2">
+                                    <a href="{{ asset('storage/' . $menuDataItem->file_path) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-info">
+                                        Lihat Dokumen Saat Ini
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="form-group">
                             <label for="isi_konten">Isi Konten</label>
                             <textarea class="form-control" id="isi_konten" name="isi_konten" rows="10" required>{{ old('isi_konten', $menuData->isi_konten) }}</textarea>
                         </div>

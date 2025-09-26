@@ -18,24 +18,26 @@
                 @endif
 
                 <div class="table-responsive">
-                    <table class="table table-striped" id="table1">
-                        <thead>
-                            <tr>
-                                <th>Nama Menu</th>
-                                <th>Kategori</th>
-                                <th>Urutan</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                   <table class="table table-striped" id="table1">
+    <thead>
+        <tr>
+            <th>Nama Menu</th>
+            <th>Kategori</th>
+            <th>Tipe Tampilan</th> {{-- <-- TAMBAHKAN HEADER INI --}}
+            <th>Urutan</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
                             {{-- Gunakan partial rekursif untuk menampilkan menu --}}
                             @forelse ($menus as $menu)
                                 @include('menu._menu-item', ['menu' => $menu, 'level' => 0])
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="text-center">Tidak ada data menu.</td>
-                                </tr>
-                            @endforelse
+                          @empty
+            <tr>
+                {{-- Ubah colspan dari 4 menjadi 5 --}}
+                <td colspan="5" class="text-center">Tidak ada data menu.</td>
+            </tr>
+        @endforelse
                         </tbody>
                     </table>
                 </div>
