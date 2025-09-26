@@ -23,6 +23,8 @@
                                     <th>Gambar</th>
                                     <th>Judul Konten</th>
                                     <th>Parent Menu</th>
+                                    <th>Dokumen</th>
+
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -39,6 +41,16 @@
                                         </td>
                                         <td>{{ $item->judul }}</td>
                                         <td>{{ $item->menu->nama ?? 'N/A' }}</td>
+                                        <td>
+                                            @if ($item->file_path)
+                                                <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank"
+                                                    class="btn btn-sm btn-outline-primary">
+                                                    Unduh
+                                                </a>
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('menu-data.edit', $item) }}"
                                                 class="btn btn-sm btn-warning">Edit</a>

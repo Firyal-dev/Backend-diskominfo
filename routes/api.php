@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MenuController;
 use App\Http\Controllers\Api\MenuDataController; // <-- Tambahkan import ini
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,6 +16,7 @@ use App\Http\Controllers\Api\MenuDataController; // <-- Tambahkan import ini
 Route::get('/menus', [MenuController::class, 'getTree']);
 
 // [BARU] Rute untuk data konten
+
 Route::get('/pages', [MenuDataController::class, 'index']);      // Untuk daftar (misal: /api/pages?menu=berita)
 Route::get('/pages/{menuData}', [MenuDataController::class, 'show']); // Untuk detail (misal: /api/pages/123)
 

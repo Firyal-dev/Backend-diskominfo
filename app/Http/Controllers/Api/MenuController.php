@@ -9,70 +9,65 @@ use Illuminate\Support\Str;
 
 class MenuController extends Controller
 {
-    /**
-     * Mengambil dan mengembalikan data menu dalam format pohon (nested).
-     */
-    public function getTree()
+     public function getTree()
     {
-        // Ambil semua menu dari database, diurutkan berdasarkan 'urutan'
-        $allMenus = Menu::orderBy('urutan')->get()->toArray();
+        // Mengambil menu level atas (parent) dan memuat semua children-nya secara rekursif
+        $menus = Menu::whereNull('parent_id')
+                    ->with('children') // 'children' adalah nama relasi di Model Menu
+                    ->orderBy('urutan')
+                    ->get();
 
-        // Ubah data flat menjadi struktur pohon
-        $menuTree = $this->buildTree($allMenus);
+        // Memformat data agar sesuai dengan yang diharapkan React
+        $formattedMenus = $this->formatMenusForFrontend($menus);
 
-        // Kembalikan sebagai respons JSON
-        return response()->json($menuTree);
+        return response()->json($formattedMenus);
     }
 
     /**
-     * Fungsi rekursif untuk membangun struktur pohon dari array data menu.
-     * Fungsi ini juga akan mengubah nama kolom agar sesuai dengan ekspektasi front-end.
-     *
-     * @param array $elements Data menu dari database
-     * @param int|null $parentId ID dari parent menu yang sedang dicari anaknya
-     * @return array
+     * Fungsi rekursif untuk mengubah koleksi menu menjadi format array yang diinginkan.
      */
-    private function buildTree(array $elements, $parentId = null): array
+    private function formatMenusForFrontend($menus)
     {
-        $branch = [];
+        // Gunakan ->map untuk iterasi dan transformasi setiap item menu
+        return $menus->map(function ($menu) {
 
-        foreach ($elements as $element) {
-            if ($element['parent_id'] == $parentId) {
-                // Cari anak dari elemen saat ini
-                $children = $this->buildTree($elements, $element['id']);
+            $path_url = null;
+            $href = '#';
 
-                // Transformasi data agar sesuai dengan front-end
-                $transformedElement = [
-                    'id' => $element['id'],
-                    'label' => $element['nama'], // 'nama' -> 'label'
-                    'href' => $this->generateHref($element), // Buat href dinamis
-                    'parent_id' => $element['parent_id'],
-                    'kategori' => $element['kategori'],
-                    'children' => $children, // Tambahkan anak yang sudah ditemukan
-                ];
-
-                $branch[] = $transformedElement;
+            // 1. Tentukan link (href) berdasarkan kategori
+            if ($menu->kategori === 'statis') {
+                // Untuk menu statis, kita buat link slug dari namanya (misal: /visi-misi)
+                $path_url = '/' . Str::slug($menu->nama);
+                $href = $path_url;
+            } else { // Untuk 'dinamis' atau 'dinamis-tabel'
+                // Link ke halaman generik dengan ID menu
+                $href = '/page/' . $menu->id;
             }
-        }
-        return $branch;
-    }
 
-    /**
-     * Membuat path URL (href) berdasarkan kategori menu.
-     */
-    private function generateHref(array $menu): string
-    {
-        $slug = Str::slug($menu['nama']);
+            // Anda bisa menambahkan link khusus di sini jika perlu
+            // if (strtolower($menu->nama) === 'kontak') {
+            //     $path_url = '/kontak';
+            //     $href = '/kontak';
+            // }
 
-        if ($menu['kategori'] === 'dinamis') {
-            return "/page/{$slug}";
-        }
-        if ($menu['kategori'] === 'dinamis-tabel') {
-            return "/table/{$slug}";
-        }
+            // 2. Buat struktur dasar untuk item menu
+            $item = [
+                'id' => $menu->id,
+                'label' => $menu->nama,
+                'href' => $href,
+                'path_url' => $path_url,
+                'children' => [], // Siapkan array kosong untuk children
+            ];
 
-        // Untuk menu statis, kita asumsikan link-nya adalah slug dari namanya.
-        // Contoh: "Visi Misi" -> "/visi-misi"
-        return "/{$slug}";
+            // 3. Jika ada children, format mereka juga (di sinilah rekursi terjadi)
+            if ($menu->children->isNotEmpty()) {
+                // Parent menu yang memiliki anak seharusnya tidak bisa diklik, hanya membuka dropdown.
+                $item['href'] = '#';
+                $item['children'] = $this->formatMenusForFrontend($menu->children);
+            }
+
+            return $item;
+
+        })->values(); // ->values() untuk mereset key array menjadi 0, 1, 2, ...
     }
 }

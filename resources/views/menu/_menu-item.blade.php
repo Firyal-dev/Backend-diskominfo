@@ -8,10 +8,19 @@
            @if($level > 0) └─ @endif {{ $menu->nama }}
         </span>
     </td>
-    <td>
+<td>
         {{-- Display the category with a nice badge --}}
         <span class="badge bg-secondary">{{ Str::ucfirst(str_replace('-', ' ', $menu->kategori)) }}</span>
     </td>
+    <td>
+        {{-- Tampilkan hanya jika kategori bukan statis --}}
+        @if($menu->kategori !== 'statis')
+            <span class="badge bg-info">{{ Str::ucfirst($menu->tipe_tampilan) }}</span>
+        @else
+            -
+        @endif
+    </td>
+
     <td>{{ $menu->urutan }}</td>
     <td>
         {{-- Action Buttons --}}

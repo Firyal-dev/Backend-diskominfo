@@ -37,6 +37,7 @@ class MenuController extends Controller
             'nama' => 'required|string|max:255',
             'urutan' => 'required|integer',
             'kategori' => ['required', Rule::in(['statis', 'dinamis', 'dinamis-tabel'])],
+            'tipe_tampilan' => ['required', Rule::in(['card', 'list', 'tabel'])],
             'parent_id' => 'nullable|exists:menus,id',
         ]);
 
@@ -66,6 +67,7 @@ class MenuController extends Controller
             'nama' => 'required|string|max:255',
             'urutan' => 'required|integer',
             'kategori' => ['required', Rule::in(['statis', 'dinamis', 'dinamis-tabel'])],
+            'tipe_tampilan' => ['required', Rule::in(['card', 'list', 'tabel'])],
             'parent_id' => ['nullable', 'exists:menus,id', Rule::notIn([$menu->id])],
         ]);
 

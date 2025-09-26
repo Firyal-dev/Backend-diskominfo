@@ -14,7 +14,9 @@ class Menu extends Model
         'nama',
         'urutan',
         'kategori',
+        'tipe_tampilan',
         'parent_id',
+
     ];
 
     // Relasi ke parent (satu menu memiliki satu parent)

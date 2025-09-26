@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\menuPage ;
+namespace App\Http\Controllers\menuPage;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
@@ -30,31 +30,43 @@ class MenuDataController extends Controller
             'judul' => 'required|string|max:255',
             'isi_konten' => 'required|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'dokumen' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:10240', // <-- TAMBAHKAN VALIDASI DOKUMEN
         ]);
 
-        $filePath = null;
+        $gambarPath = null;
         if ($request->hasFile('gambar')) {
-            $filePath = $request->file('gambar')->store('menu', 'public');
+            // Simpan gambar ke direktori 'menu/images' untuk membedakan
+            $gambarPath = $request->file('gambar')->store('menu/images', 'public');
         }
+
+        // --- LOGIKA BARU UNTUK DOKUMEN ---
+        $dokumenPath = null;
+        if ($request->hasFile('dokumen')) {
+            // Simpan dokumen ke direktori 'menu/documents'
+            $dokumenPath = $request->file('dokumen')->store('menu/documents', 'public');
+        }
+        // --- AKHIR LOGIKA BARU ---
 
         MenuData::create([
             'menu_id' => $request->menu_id,
             'judul' => $request->judul,
             'isi_konten' => $request->isi_konten,
-            'gambar_file_path' => $filePath,
+            'gambar_file_path' => $gambarPath,
+            'file_path' => $dokumenPath, // <-- SIMPAN PATH DOKUMEN
         ]);
 
-        return redirect()->route('menu-data.index')->with('success', 'Konten berhasil ditambahkan.');
+        return redirect()->route('menu-data.index')->with('success', 'Konten berhasil dibuat.');
     }
 
-    // [DIPERBAIKI] Menggunakan parameter $menuData sesuai konvensi Laravel
     public function edit(MenuData $menuData)
     {
         $menus = Menu::whereIn('kategori', ['dinamis', 'dinamis-tabel'])->orderBy('nama')->get();
-        return view('menu-data.edit', compact('menuData', 'menus'));
+        // Ganti nama variabel agar konsisten dengan view
+        $menuDataItem = $menuData;
+        return view('menu-data.edit', compact('menuDataItem', 'menus'));
     }
 
-    // [DIPERBAIKI] Menggunakan parameter $menuData sesuai konvensi Laravel
+
     public function update(Request $request, MenuData $menuData)
     {
         $request->validate([
@@ -62,36 +74,55 @@ class MenuDataController extends Controller
             'judul' => 'required|string|max:255',
             'isi_konten' => 'required|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'dokumen' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:10240', // <-- TAMBAHKAN VALIDASI DOKUMEN
         ]);
 
-        $filePath = $menuData->gambar_file_path;
+        $gambarPath = $menuData->gambar_file_path;
         if ($request->hasFile('gambar')) {
-            if ($filePath) {
-                Storage::disk('public')->delete($filePath);
+            if ($gambarPath) {
+                Storage::disk('public')->delete($gambarPath);
             }
-            $filePath = $request->file('gambar')->store('menu', 'public');
+            $gambarPath = $request->file('gambar')->store('menu/images', 'public');
         }
+
+        // --- LOGIKA BARU UNTUK UPDATE DOKUMEN ---
+        $dokumenPath = $menuData->file_path;
+        if ($request->hasFile('dokumen')) {
+            // Hapus file lama jika ada
+            if ($dokumenPath) {
+                Storage::disk('public')->delete($dokumenPath);
+            }
+            // Simpan file baru
+            $dokumenPath = $request->file('dokumen')->store('menu/documents', 'public');
+        }
+        // --- AKHIR LOGIKA BARU ---
+
 
         $menuData->update([
             'menu_id' => $request->menu_id,
             'judul' => $request->judul,
             'isi_konten' => $request->isi_konten,
-            'gambar_file_path' => $filePath,
+            'gambar_file_path' => $gambarPath,
+            'file_path' => $dokumenPath, // <-- UPDATE PATH DOKUMEN
         ]);
 
         return redirect()->route('menu-data.index')->with('success', 'Konten berhasil diperbarui.');
     }
 
-    // [DIPERBAIKI] Menggunakan parameter $menuData sesuai konvensi Laravel
     public function destroy(MenuData $menuData)
     {
         if ($menuData->gambar_file_path) {
             Storage::disk('public')->delete($menuData->gambar_file_path);
         }
 
+        // --- LOGIKA BARU UNTUK HAPUS DOKUMEN ---
+        if ($menuData->file_path) {
+            Storage::disk('public')->delete($menuData->file_path);
+        }
+        // --- AKHIR LOGIKA BARU ---
+
         $menuData->delete();
 
         return redirect()->route('menu-data.index')->with('success', 'Konten berhasil dihapus.');
     }
 }
-
