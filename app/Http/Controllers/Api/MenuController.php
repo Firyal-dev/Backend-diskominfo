@@ -1,73 +1,93 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\menuPage;
 
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
 {
-     public function getTree()
+    /**
+     * Menampilkan daftar semua menu dalam format pohon.
+     */
+    public function index()
     {
-        // Mengambil menu level atas (parent) dan memuat semua children-nya secara rekursif
         $menus = Menu::whereNull('parent_id')
-                    ->with('children') // 'children' adalah nama relasi di Model Menu
-                    ->orderBy('urutan')
-                    ->get();
+            ->orderBy('urutan')
+            ->with('children')
+            ->get();
 
-        // Memformat data agar sesuai dengan yang diharapkan React
-        $formattedMenus = $this->formatMenusForFrontend($menus);
+        $admin = Auth::user();
 
-        return response()->json($formattedMenus);
+        return view('menu.index', compact('menus', 'admin'));
     }
 
     /**
-     * Fungsi rekursif untuk mengubah koleksi menu menjadi format array yang diinginkan.
+     * Menampilkan formulir untuk membuat menu baru.
      */
-    private function formatMenusForFrontend($menus)
+    public function create()
     {
-        // Gunakan ->map untuk iterasi dan transformasi setiap item menu
-        return $menus->map(function ($menu) {
+        $parentMenus = Menu::orderBy('nama')->get();
+        return view('menu.create', compact('parentMenus'));
+    }
 
-            $path_url = null;
-            $href = '#';
+    /**
+     * Menyimpan menu baru ke dalam database.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'urutan' => 'required|integer',
+            'kategori' => ['required', Rule::in(['statis', 'dinamis', 'dinamis-tabel'])],
+            'tipe_tampilan' => ['required', Rule::in(['card', 'list', 'tabel'])],
+            'parent_id' => 'nullable|exists:menus,id',
+        ]);
 
-            // 1. Tentukan link (href) berdasarkan kategori
-            if ($menu->kategori === 'statis') {
-                // Untuk menu statis, kita buat link slug dari namanya (misal: /visi-misi)
-                $path_url = '/' . Str::slug($menu->nama);
-                $href = $path_url;
-            } else { // Untuk 'dinamis' atau 'dinamis-tabel'
-                // Link ke halaman generik dengan ID menu
-                $href = '/page/' . $menu->id;
-            }
+        Menu::create($request->all());
 
-            // Anda bisa menambahkan link khusus di sini jika perlu
-            // if (strtolower($menu->nama) === 'kontak') {
-            //     $path_url = '/kontak';
-            //     $href = '/kontak';
-            // }
+        return redirect()->route('menu.index')->with('success', 'Menu berhasil dibuat.');
+    }
 
-            // 2. Buat struktur dasar untuk item menu
-            $item = [
-                'id' => $menu->id,
-                'label' => $menu->nama,
-                'href' => $href,
-                'path_url' => $path_url,
-                'children' => [], // Siapkan array kosong untuk children
-            ];
+    /**
+     * Menampilkan formulir untuk mengedit menu.
+     */
+    public function edit(Menu $menu)
+    {
+        $parentMenus = Menu::where('id', '!=', $menu->id)
+            ->orderBy('nama')
+            ->get();
 
-            // 3. Jika ada children, format mereka juga (di sinilah rekursi terjadi)
-            if ($menu->children->isNotEmpty()) {
-                // Parent menu yang memiliki anak seharusnya tidak bisa diklik, hanya membuka dropdown.
-                $item['href'] = '#';
-                $item['children'] = $this->formatMenusForFrontend($menu->children);
-            }
+        return view('menu.edit', compact('menu', 'parentMenus'));
+    }
 
-            return $item;
+    /**
+     * Memperbarui menu yang ada.
+     */
+    public function update(Request $request, Menu $menu)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'urutan' => 'required|integer',
+            'kategori' => ['required', Rule::in(['statis', 'dinamis', 'dinamis-tabel'])],
+            'tipe_tampilan' => ['required', Rule::in(['card', 'list', 'tabel'])],
+            'parent_id' => ['nullable', 'exists:menus,id', Rule::notIn([$menu->id])],
+        ]);
 
-        })->values(); // ->values() untuk mereset key array menjadi 0, 1, 2, ...
+        $menu->update($request->all());
+
+        return redirect()->route('menu.index')->with('success', 'Menu berhasil diperbarui.');
+    }
+
+    /**
+     * Menghapus menu.
+     */
+    public function destroy(Menu $menu)
+    {
+        $menu->delete();
+        return redirect()->route('menu.index')->with('success', 'Menu berhasil dihapus.');
     }
 }

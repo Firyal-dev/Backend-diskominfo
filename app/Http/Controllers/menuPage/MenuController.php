@@ -14,9 +14,14 @@ class MenuController extends Controller
     /**
      * Menampilkan daftar semua menu dalam format pohon.
      */
-    public function index()
+   public function index()
     {
-        $menus = Menu::whereNull('parent_id')->orderBy('urutan')->with('children')->get();
+        // Ambil semua menu parent + children
+        $menus = Menu::whereNull('parent_id')
+            ->with('children.children') // recursive sampai 2 tingkat (kalau lebih bisa tambah)
+            ->orderBy('urutan')
+            ->get();
+
         $admin = Auth::user();
 
         return view('menu.index', compact('menus', 'admin'));

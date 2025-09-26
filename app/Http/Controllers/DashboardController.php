@@ -16,30 +16,57 @@ class DashboardController extends Controller
     /**
      * Display the dashboard with dynamic data.
      */
-    public function index()
-    {
-        // --- Get all the data needed for the cards ---
-        $jumlahAgenda = Agenda::count();
-        $jumlahKonten = MenuData::count(); // <-- 4. Count all content records
-        $jumlahMenu   = Menu::count();     // <-- 5. Count all menu structure records
-        $jumlahAdmin  = User::count();
-        $jumlahFoto   = Galeri::count();
-        $admin = Auth::user();
+   public function index()
+{
+    // --- Get all the data needed for the cards ---
+    $jumlahAgenda = Agenda::count();
+    $jumlahKonten = MenuData::count();
+    $jumlahMenu   = Menu::count();
+    $jumlahAdmin  = User::count();
+    $jumlahFoto   = Galeri::count();
+    $admin        = Auth::user();
 
-        // Get the 5 upcoming agendas
-        $agendasTerdekat = Agenda::where('tanggal', '>=', now())
-            ->orderBy('tanggal', 'asc')
-            ->take(5)
-            ->get();
+    // Get the 5 upcoming agendas
+    $agendasTerdekat = Agenda::where('tanggal', '>=', now())
+        ->orderBy('tanggal', 'asc')
+        ->take(5)
+        ->get();
 
-        // --- Send all the data to the view ---
-        return view('dashboard.index', [
-            'jumlahAgenda'    => $jumlahAgenda,
-            'jumlahKonten'    => $jumlahKonten,
-            'jumlahMenu'      => $jumlahMenu,
-            'jumlahAdmin'     => $jumlahAdmin,
-            'jumlahFoto'      => $jumlahFoto,
-            'agendasTerdekat' => $agendasTerdekat,
-        ], compact('admin'));
+    // --- Chart Data: jumlah konten per bulan (12 bulan terakhir) ---
+    $kontenBulanan = MenuData::selectRaw('MONTH(created_at) as bulan, COUNT(*) as total')
+        ->whereYear('created_at', now()->year)
+        ->groupBy('bulan')
+        ->orderBy('bulan')
+        ->pluck('total', 'bulan')
+        ->toArray();
+
+    // Susun data untuk 12 bulan (jangan bolong)
+    $bulanIndo = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    $chartBulan = [];
+    $chartJumlah = [];
+    for ($i = 1; $i <= 12; $i++) {
+        $chartBulan[]  = $bulanIndo[$i - 1];
+        $chartJumlah[] = $kontenBulanan[$i] ?? 0;
     }
+
+    $chartData = [
+        'bulan' => $chartBulan,
+        'jumlah' => $chartJumlah,
+    ];
+
+    // --- Send all the data to the view ---
+    return view('dashboard.index', [
+        'jumlahAgenda'    => $jumlahAgenda,
+        'jumlahKonten'    => $jumlahKonten,
+        'jumlahMenu'      => $jumlahMenu,
+        'jumlahAdmin'     => $jumlahAdmin,
+        'jumlahFoto'      => $jumlahFoto,
+        'agendasTerdekat' => $agendasTerdekat,
+        'chartData'       => $chartData,
+        'admin'           => $admin,
+    ]);
+}
+
+
+
 }
