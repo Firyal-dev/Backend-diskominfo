@@ -19,7 +19,15 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'password' => '12345678',
+            'level' => 'superadmin'
+        ]);
 
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test2@example.com',
+            'password' => '12345678',
+            'level' => 'admin'
         ]);
 
             $this->call(MenuSeeder::class);

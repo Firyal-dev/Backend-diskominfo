@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller; // <-- Penting untuk meng-extend Controller
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
 {
@@ -16,7 +17,9 @@ class MenuController extends Controller
     public function index()
     {
         $menus = Menu::whereNull('parent_id')->orderBy('urutan')->with('children')->get();
-        return view('menu.index', compact('menus'));
+        $admin = Auth::user();
+
+        return view('menu.index', compact('menus', 'admin'));
     }
 
     /**

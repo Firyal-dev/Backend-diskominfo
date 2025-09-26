@@ -35,13 +35,17 @@
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header position-relative">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div class="logo">
-                            <a href="{{ route('dashboard') }}"><img src="{{ asset('mazer/dist/assets/compiled/svg/logo.svg') }}" alt="Logo" srcset=""></a>
+                        <div class="logo d-flex align-items-center gap-2">
+                            <!-- <i class="bi bi-person-circle fs-4"></i> -->
+                            <div class="d-flex flex-column">
+                                <span class="fs-5 fw-semibold">{{ $admin->name }}</span>
+                                <span class="badge bg-primary align-self-start mt-1" style="font-size: 0.7rem;">
+                                    {{ $admin->level }}
+                                </span>
+                            </div>
                         </div>
+
                         <div class="gap-2 mt-2 theme-toggle d-flex align-items-center">
-                            <svg class="iconify iconify--system-uicons" width="20" height="20" viewBox="0 0 21 21" aria-hidden="true" role="img">
-                                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M10.5 18.5a8 8 0 1 0 0-16a8 8 0 0 0 0 16Z M10.5 14.5v-8" />
-                            </svg>
                             <div class="form-check form-switch fs-6">
                                 <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
                                 <label class="form-check-label"></label>
@@ -108,18 +112,14 @@
                         <li class="sidebar-title">Sistem</li>
 
                         {{-- Placeholder untuk manajemen user/admin --}}
-                        <li class="sidebar-item">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-person-fill-gear"></i>
+                        <li class="sidebar-item {{ request()->routeIs('manageAdmins.*') ? 'active' : '' }}">
+                            <a href="{{ route('manageAdmins.index') }}" class='sidebar-link'>
+                                <i class="bi bi-file-earmark-text-fill"></i>
                                 <span>Manajemen Admin</span>
                             </a>
                         </li>
 
                         <li class="sidebar-item">
-                            <!-- <a href="{{ route('logout') }}" class='sidebar-link' onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Logout</span>
-                            </a> -->
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button class="btn btn-danger w-100" type="submit">Logout</button>

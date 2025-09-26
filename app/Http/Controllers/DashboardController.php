@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Agenda;
 use App\Models\Menu;
 use App\Models\MenuData;
-use App\Models\User;      // <-- 3. Import the User model for Admins
+use App\Models\User;
+use App\Models\Galeri;
+
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -19,7 +22,9 @@ class DashboardController extends Controller
         $jumlahAgenda = Agenda::count();
         $jumlahKonten = MenuData::count(); // <-- 4. Count all content records
         $jumlahMenu   = Menu::count();     // <-- 5. Count all menu structure records
-        $jumlahAdmin  = User::count();     // <-- 6. Count all admin users
+        $jumlahAdmin  = User::count();
+        $jumlahFoto   = Galeri::count();
+        $admin = Auth::user();
 
         // Get the 5 upcoming agendas
         $agendasTerdekat = Agenda::where('tanggal', '>=', now())
@@ -33,7 +38,8 @@ class DashboardController extends Controller
             'jumlahKonten'    => $jumlahKonten,
             'jumlahMenu'      => $jumlahMenu,
             'jumlahAdmin'     => $jumlahAdmin,
+            'jumlahFoto'      => $jumlahFoto,
             'agendasTerdekat' => $agendasTerdekat,
-        ]);
+        ], compact('admin'));
     }
 }

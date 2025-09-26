@@ -2,15 +2,22 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
+// Dashboard Controller
 use App\Http\Controllers\DashboardController;
+
+// Agenda Controller
 use App\Http\Controllers\AgendaController;
 
-// Content Controllers
+// Content Controller
 use App\Http\Controllers\ContentController;
 
 // Menu Controllers
 use App\Http\Controllers\menuPage\MenuController;
 use App\Http\Controllers\menuPage\MenuDataController;
+
+// Manajemen Admin Controller
+use App\Http\Controllers\ManageAdminsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,6 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/content/album/upload', [ContentController::class, 'uploadAlbumPhotos'])->name('content.uploadAlbumPhotos');
     Route::delete('/content/album/photos/delete', [ContentController::class, 'deleteAlbumPhotos'])->name('content.deleteAlbumPhotos');
     Route::post('/content/album/edit/{id}', [ContentController::class, 'editAlbum'])->name('content.editAlbum');
+
+    // Manajemen Admins
+    Route::get('/manageAdmins', [ManageAdminsController::class, 'index'])->name('manageAdmins.index');
 
     Route::resource('menu', MenuController::class);
     Route::resource('menu-data', MenuDataController::class)

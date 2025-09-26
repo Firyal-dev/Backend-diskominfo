@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agenda;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AgendaController extends Controller
 {
@@ -13,7 +14,9 @@ class AgendaController extends Controller
     public function index()
     {
         $agendas = Agenda::latest()->paginate(10); // Ambil data terbaru dan paginasi
-        return view('agenda.index', compact('agendas'));
+        $admin = Auth::user();
+
+        return view('agenda.index', compact('agendas', 'admin'));
     }
 
     /**

@@ -8,13 +8,16 @@ use App\Models\MenuData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class MenuDataController extends Controller
 {
     public function index()
     {
         $menuDataItems = MenuData::with('menu')->latest()->paginate(10);
-        return view('menu-data.index', compact('menuDataItems'));
+        $admin = Auth::user();
+
+        return view('menu-data.index', compact('menuDataItems', 'admin'));
     }
 
     public function create()

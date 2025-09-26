@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Galeri;
 use App\Models\Album;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ContentController extends Controller
@@ -14,8 +15,9 @@ class ContentController extends Controller
     {
         $galeris = Galeri::orderBy('created_at', 'desc')->get();
         $albums = Album::withCount('galeri')->orderBy('created_at', 'desc')->get();
+        $admin = Auth::user();
 
-        return view('content.index', compact('galeris', 'albums'));
+        return view('content.index', compact('galeris', 'albums', 'admin'));
     }
 
     // Galeri Methods
