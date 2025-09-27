@@ -11,11 +11,19 @@
 </div>
 <div class="card">
     <div class="card-header d-flex justify-content-between">
-        <h5 class="card-title">
-            Daftar Admin
-        </h5>
-        <a href="{{ route('manageAdmins.create') }}" class="btn btn-primary">Tambah Admin</a>
+        <h5 class="card-title">Daftar Admin</h5>
+        <div class="d-flex">
+            <form action="{{ route('manageAdmins.index') }}" method="GET" class="d-flex">
+                <input type="search" name="search" value="{{ request('search') }}" class="form-control me-2" placeholder="Cari nama/email">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+                @if(request('search'))
+                <a href="{{ route('manageAdmins.index') }}" class="btn btn-outline-secondary ms-2">Reset</a>
+                @endif
+            </form>
+            <a href="{{ route('manageAdmins.create') }}" class="btn btn-primary ms-3">Tambah Admin</a>
+        </div>
     </div>
+
     <div class="card-body">
         <table class="table table-striped" id="table1">
             <thead>
@@ -54,6 +62,9 @@
                 @endforelse
             </tbody>
         </table>
+        <div class="d-flex justify-content-center mt-3">
+            {{ $users->links() }}
+        </div>
 
     </div>
 </div>

@@ -12,15 +12,29 @@ class ManageAdminsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Hanya superadmin yang bisa akses
         if (Auth::user()->level !== 'superadmin') {
             abort(403, 'Unauthorized');
         }
-        $users = User::get();
+
+        $search = $request->input('search');
+
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10) // tampilkan 10 per halaman
+            ->appends(['search' => $search]);
+
         $admin = Auth::user();
+
         return view('manageAdmins.index', compact('users', 'admin'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
