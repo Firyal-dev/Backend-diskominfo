@@ -57,7 +57,7 @@
 
                                     <div class="d-flex flex-column flex-sm-row gap-2">
                                         <a href="{{ route('album.photos.index', $album->id) }}" class="btn btn-outline-primary flex-fill">Lihat Album</a>
-                                        <button data-bs-toggle="modal" data-bs-target="#edit-album" class="btn btn-outline-warning flex-fill">Edit Album</button>
+                                        <a href="{{ route('album.edit', $album->id) }}" class="btn btn-outline-warning flex-fill">Edit Album</a>
                                     </div>
                                 </div>
                             </div>
@@ -71,7 +71,6 @@
         </div>
     </section>
 </div>
-@include('content.album.modal_edit_album')
 
 <!-- Delete berjamaah -->
 <script>
@@ -125,5 +124,4 @@
         }
     });
 </script>
-
 @endsection

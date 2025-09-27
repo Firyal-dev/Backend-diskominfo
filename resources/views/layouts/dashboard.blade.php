@@ -118,10 +118,10 @@
                             </ul>
                         </li>
 
-                        <li class="sidebar-title">Sistem</li>
-
+                        
                         {{-- Placeholder untuk manajemen user/admin --}}
                         @if (Auth::user() && Auth::user()->level == 'superadmin')
+                        <li class="sidebar-title">Sistem</li>
                         <li class="sidebar-item {{ request()->routeIs('manageAdmins.*') ? 'active' : '' }}">
                             <a href="{{ route('manageAdmins.index') }}" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-text-fill"></i>

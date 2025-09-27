@@ -14,7 +14,7 @@
         <h5 class="card-title">
             Daftar Admin
         </h5>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahAdmin">Tambah Admin</button>
+        <a href="{{ route('manageAdmins.create') }}" class="btn btn-primary">Tambah Admin</a>
     </div>
     <div class="card-body">
         <table class="table table-striped" id="table1">
@@ -24,6 +24,7 @@
                     <th>Email</th>
                     <th>Tanggal dibuat</th>
                     <th>Level</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +34,18 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->created_at }}</td>
                     <td>{{ $user->level }}</td>
+                    <td>
+                        @if(Auth::id() === $user->id)
+                        <span class="badge bg-success">Active</span>
+                        @else
+                        <a href="{{ route('manageAdmins.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route('manageAdmins.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus admin ini?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                        </form>
+                        @endif
+                    </td>
                 </tr>
                 @empty
                 <tr>

@@ -70,8 +70,11 @@ class AlbumController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $album = Album::findOrFail($id);
+        
+        return view('content.album.edit', compact('album'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -99,7 +102,7 @@ class AlbumController extends Controller
 
         $album->save();
 
-        return redirect()->back()->with('success', 'Album berhasil diubah.');
+        return redirect()->route('album.index')->with('success', 'Album berhasil diubah.');
     }
 
     /**

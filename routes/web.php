@@ -9,9 +9,6 @@ use App\Http\Controllers\DashboardController;
 // Agenda Controller
 use App\Http\Controllers\AgendaController;
 
-// Content Controller
-use App\Http\Controllers\contentPage\ContentController;
-
 // Galeri Controller
 use App\Http\Controllers\contentPage\GaleriController;
 
@@ -45,9 +42,6 @@ Route::middleware('auth')->group(function () {
     // Agenda
     Route::resource('agenda', AgendaController::class);
 
-    // Content
-    Route::get('/content', [ContentController::class, 'index'])->name('content.index');
-
     // Content -> Galeri
     Route::resource('galeri', GaleriController::class);
     Route::delete('galeri/delete', [GaleriController::class, 'destroy'])->name('galeri.destroy');
@@ -61,7 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/album/{album}/photos', [AlbumsPhotosController::class, 'destroy'])->name('album.photos.destroy');
 
     // Manajemen Admins
-    Route::get('/manageAdmins', [ManageAdminsController::class, 'index'])->name('manageAdmins.index');
+    Route::resource('manageAdmins', ManageAdminsController::class);
 
     Route::resource('menu', MenuController::class);
     Route::resource('menu-data', MenuDataController::class)
@@ -69,3 +63,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+

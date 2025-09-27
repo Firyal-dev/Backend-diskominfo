@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-12 d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
-                            <a href="{{ route('content.index') }}" class="btn btn-light-secondary me-1 mb-1">Batal</a>
+                            <a href="{{ route('album.index') }}" class="btn btn-light-secondary me-1 mb-1">Batal</a>
                         </div>
                     </div>
                 </form>
