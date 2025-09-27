@@ -38,17 +38,10 @@
                         <div class="gap-2 logo d-flex align-items-center">
                             <!-- <i class="bi bi-person-circle fs-4"></i> -->
                             <div class="d-flex flex-column">
-<<<<<<< HEAD
                                 <span class="fs-5 fw-semibold">{{ Auth::user()->name }}</span>
                                 <span class="badge bg-primary align-self-start mt-1" style="font-size: 0.7rem;">
                                     {{ Auth::user()->level }}
-=======
-                                <span class="fs-5 fw-semibold">riffa keren</span>
-                                <span class="mt-1 badge bg-primary align-self-start" style="font-size: 0.7rem;">
-                                    raja cimanggis
->>>>>>> 6870e32f5220873af3721a8704023b8b129bdb6c
                                 </span>
-
                             </div>
                         </div>
 
