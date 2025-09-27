@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-6 col-12">
             <div class="card">
-                <div class="card-body">
+                <div class="card-content">
                     <div class="modal fade text-left" id="edit-album" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-sm-down" role="document">
@@ -10,8 +10,9 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="myModalLabel1">Edit Album</h5>
                                 </div>
-                                <form method="post" action="{{ route('content.editAlbum', $album->id) }}" class="form form-vertical" enctype="multipart/form-data">
+                                <form method="post" action="{{ route('album.update', $album->id) }}" class="form form-vertical" enctype="multipart/form-data">
                                     @csrf
+                                    @method('PUT')
                                     <div class="modal-body">
                                         <div class="form-body">
                                             <div class="row">

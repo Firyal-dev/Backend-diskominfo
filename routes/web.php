@@ -10,7 +10,16 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AgendaController;
 
 // Content Controller
-use App\Http\Controllers\ContentController;
+use App\Http\Controllers\contentPage\ContentController;
+
+// Galeri Controller
+use App\Http\Controllers\contentPage\GaleriController;
+
+//  Album Controller
+use App\Http\Controllers\contentPage\AlbumController;
+
+// Albums Photos Controller
+use App\Http\Controllers\contentPage\AlbumsPhotosController;
 
 // Menu Controllers
 use App\Http\Controllers\menuPage\MenuController;
@@ -18,6 +27,7 @@ use App\Http\Controllers\menuPage\MenuDataController;
 
 // Manajemen Admin Controller
 use App\Http\Controllers\ManageAdminsController;
+use App\Models\Album;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,18 +45,20 @@ Route::middleware('auth')->group(function () {
     // Agenda
     Route::resource('agenda', AgendaController::class);
 
-    // Content -> Galeri
+    // Content
     Route::get('/content', [ContentController::class, 'index'])->name('content.index');
-    Route::post('/content/upload', [ContentController::class, 'uploadGaleri'])->name('content.uploadGaleri');
-    Route::delete('/content/delete', [ContentController::class, 'deleteGaleri'])->name('content.deleteGaleri');
+
+    // Content -> Galeri
+    Route::resource('galeri', GaleriController::class);
+    Route::delete('galeri/delete', [GaleriController::class, 'destroy'])->name('galeri.destroy');
 
     // Content -> Album
-    Route::get('/content/album', [ContentController::class, 'index'])->name('content.album.index');
-    Route::post('/content/album/create', [ContentController::class, 'createAlbum'])->name('content.createAlbum');
-    Route::delete('/content/album/delete', [ContentController::class, 'deleteAlbum'])->name('content.deleteAlbum');
-    Route::post('/content/album/upload', [ContentController::class, 'uploadAlbumPhotos'])->name('content.uploadAlbumPhotos');
-    Route::delete('/content/album/photos/delete', [ContentController::class, 'deleteAlbumPhotos'])->name('content.deleteAlbumPhotos');
-    Route::post('/content/album/edit/{id}', [ContentController::class, 'editAlbum'])->name('content.editAlbum');
+    Route::resource('album', AlbumController::class);
+    Route::delete('/album/delete', [AlbumController::class, 'destroy'])->name('album.destroy');
+
+    // Content -> Album -> Photos
+    Route::resource('album.photos', AlbumsPhotosController::class);
+    Route::delete('/album/{album}/photos', [AlbumsPhotosController::class, 'destroy'])->name('album.photos.destroy');
 
     // Manajemen Admins
     Route::get('/manageAdmins', [ManageAdminsController::class, 'index'])->name('manageAdmins.index');

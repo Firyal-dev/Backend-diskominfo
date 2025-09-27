@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\contentPage;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +14,6 @@ class ContentController extends Controller
     public function index()
     {
         $galeris = Galeri::orderBy('created_at', 'desc')->get();
-        $albums = Album::withCount('galeri')->orderBy('created_at', 'desc')->get();
         $admin = Auth::user();
 
         return view('content.index', compact('galeris', 'albums', 'admin'));

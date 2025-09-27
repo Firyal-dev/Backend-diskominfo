@@ -1,10 +1,42 @@
+@extends('layouts.dashboard')
+
+@section('content')
+<div class="page-title">
+    <div class="row">
+        <div class="col-12 col-md-6 order-md-1 order-last">
+            <h3>Manajemen Konten</h3>
+        </div>
+        <div class="col-12 col-md-6 order-md-2 order-first">
+            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Manajemen Konten</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
 <div class="page-heading">
     <section class="section">
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Galeri</h5>
+                        <div>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('galeri.create') }}" class="btn btn-primary">Tambah Foto</a>
+                                <form id="deleteGaleriForm" action="{{ route('galeri.destroy') }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" id="deleteGaleriBtn" disabled>
+                                        <i class="bi bi-trash-fill"></i> Hapus Foto
+                                        <span id="selectedCountGaleri" class="badge bg-light text-dark ms-1" style="display:none;">0</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row gallery" id="galleryCheckboxes">
@@ -130,3 +162,5 @@
         }
     });
 </script>
+
+@endsection

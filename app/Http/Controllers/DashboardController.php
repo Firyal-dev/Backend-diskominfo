@@ -24,8 +24,6 @@ class DashboardController extends Controller
         $jumlahMenu   = Menu::count();     // <-- 5. Count all menu structure records
         $jumlahAdmin  = User::count();
         $jumlahFoto   = Galeri::count();
-        $admin = Auth::user();
-
         // Get the 5 upcoming agendas
         $agendasTerdekat = Agenda::where('tanggal', '>=', now())
             ->orderBy('tanggal', 'asc')
@@ -40,6 +38,6 @@ class DashboardController extends Controller
             'jumlahAdmin'     => $jumlahAdmin,
             'jumlahFoto'      => $jumlahFoto,
             'agendasTerdekat' => $agendasTerdekat,
-        ], compact('admin'));
+        ]);
     }
 }

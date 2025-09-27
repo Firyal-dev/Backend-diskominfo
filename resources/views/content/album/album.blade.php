@@ -1,15 +1,46 @@
+@extends('layouts.dashboard')
+
+@section('content')
+<div class="page-title">
+    <div class="row">
+        <div class="col-12 col-md-6 order-md-1 order-last">
+            <h3>Manajemen Konten</h3>
+        </div>
+        <div class="col-12 col-md-6 order-md-2 order-first">
+            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Manajemen Album</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
 <div class="page-heading">
     <section class="section">
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="card-title">Album</h5>
+                        <div>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('album.create') }}" class="btn btn-primary">Buat Album</a>
+                                <form id="deleteAlbumForm" action="{{ route('album.destroy') }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" id="deleteAlbumBtn"><i class="bi bi-trash-fill"></i> Hapus Album
+                                        <span id="selectedCountAlbum" class="badge bg-light text-dark ms-1" style="display:none;">0</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="row gallery" id="albumCheckboxes">
+                        <div class="row row-cols-1 row-cols-md-2 g-4" id="albumCheckboxes">
                             @forelse ($albums as $album)
-                            <div class="col-12 col-sm-6 mb-4">
+                            <div class="col">
                                 <div class="border rounded p-2 h-100 d-flex flex-column position-relative">
                                     <!-- Label jumlah foto -->
                                     <input type="checkbox" name="selected_album[]" value="{{ $album->id }}"
@@ -25,18 +56,13 @@
                                     <h5 class="mb-1 text-truncate" title="{{ $album->nama }}">{{ $album->nama }}</h5>
 
                                     <div class="d-flex flex-column flex-sm-row gap-2">
-                                        <button @click="albumId = {{ $album->id }}; view = 'album-photos'" class="btn btn-outline-primary flex-fill">Lihat Album</button>
+                                        <a href="{{ route('album.photos.index', $album->id) }}" class="btn btn-outline-primary flex-fill">Lihat Album</a>
                                         <button data-bs-toggle="modal" data-bs-target="#edit-album" class="btn btn-outline-warning flex-fill">Edit Album</button>
                                     </div>
                                 </div>
                             </div>
-
-                            {{-- MODAL EDIT ALBUM --}}
-                            @include('content.album.modal_edit_album')
                             @empty
-                            <div class="col-12">
-                                <div class="text-center">Tidak ada album ditemukan.</div>
-                            </div>
+                            <div class="col-12 text-center">Tidak ada album ditemukan.</div>
                             @endforelse
                         </div>
                     </div>
@@ -45,6 +71,7 @@
         </div>
     </section>
 </div>
+@include('content.album.modal_edit_album')
 
 <!-- Delete berjamaah -->
 <script>
@@ -98,3 +125,5 @@
         }
     });
 </script>
+
+@endsection

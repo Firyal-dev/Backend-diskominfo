@@ -38,10 +38,11 @@
                         <div class="logo d-flex align-items-center gap-2">
                             <!-- <i class="bi bi-person-circle fs-4"></i> -->
                             <div class="d-flex flex-column">
-                                <span class="fs-5 fw-semibold">{{ $admin->name }}</span>
+                                <span class="fs-5 fw-semibold">{{ Auth::user()->name }}</span>
                                 <span class="badge bg-primary align-self-start mt-1" style="font-size: 0.7rem;">
-                                    {{ $admin->level }}
+                                    {{ Auth::user()->level }}
                                 </span>
+
                             </div>
                         </div>
 
@@ -83,11 +84,20 @@
                         </li>
 
                         {{-- Manajemen Konten --}}
-                        <li class="sidebar-item {{ request()->routeIs('content.*') ? 'active' : '' }}">
-                            <a href="{{ route('content.index') }}" class='sidebar-link'>
+                        <li class="sidebar-item has-sub {{ request()->routeIs('galeri.*') || request()->routeIs('album.*') ? 'active' : '' }}">
+                            <a href="#" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-text-fill"></i>
                                 <span>Manajemen Konten</span>
                             </a>
+
+                            <ul class="submenu {{ request()->routeIs('galeri.*') || request()->routeIs('album.*') ? 'active' : '' }}">
+                                <li class="submenu-item {{ request()->routeIs('galeri.*') ? 'active' : '' }}">
+                                    <a href="{{ route('galeri.index') }}" class="submenu-link">Galeri</a>
+                                </li>
+                                <li class="submenu-item {{ request()->routeIs('album.*') ? 'active' : '' }}">
+                                    <a href="{{ route('album.index') }}" class="submenu-link">Album</a>
+                                </li>
+                            </ul>
                         </li>
 
                         {{-- [DISEMPURNAKAN] Manajemen Menu menjadi Dropdown --}}
@@ -112,12 +122,14 @@
                         <li class="sidebar-title">Sistem</li>
 
                         {{-- Placeholder untuk manajemen user/admin --}}
+                        @if (Auth::user() && Auth::user()->level == 'superadmin')
                         <li class="sidebar-item {{ request()->routeIs('manageAdmins.*') ? 'active' : '' }}">
                             <a href="{{ route('manageAdmins.index') }}" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-text-fill"></i>
                                 <span>Manajemen Admin</span>
                             </a>
                         </li>
+                        @endif
 
                         <li class="sidebar-item">
                             <form action="{{ route('logout') }}" method="POST">
